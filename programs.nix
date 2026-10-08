@@ -21,6 +21,8 @@
 
   environment.etc."xdg/kitty/kitty.conf".source = ./kitty.conf;
 
+  programs.kdeconnect.enable = true;
+
   # Key Remapping
   services.keyd = {
     enable = true;

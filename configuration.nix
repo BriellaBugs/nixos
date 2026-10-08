@@ -1,21 +1,34 @@
 { config, pkgs, ... }:
 
+let
+  sources = import ./lon.nix;
+  lanzaboote = import sources.lanzaboote {
+    inherit pkgs;
+  };
+in
+
 {
   imports =
     [
       ./hardware-configuration.nix
       ./hardware-extra.nix
       ./programs.nix
+      lanzaboote.nixosModules.lanzaboote
     ];
 
   # Use the systemd-boot EFI boot loader.
 
   boot = {
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot.enable = lib.mkForce false;
       timeout = 0;
       efi.canTouchEfiVariables = true;
     };
+    
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+    }
     
     plymouth = {
       enable = true;

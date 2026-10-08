@@ -48,6 +48,8 @@ in
     };
 
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "vcan" ];
+
     consoleLogLevel = 3;
     initrd.verbose = false;
 

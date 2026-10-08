@@ -1,16 +1,18 @@
 #
-# ~/.bashrc
+# /etc/nixos/bashrc
 #
 
 set completion-ignore-case on
-
-ACCENT_COLOR=219 # Pretty pink
 
 export EDITOR='nano'
 export VISUAL='nano'
 
 _update_prompt() {
-  PS1="\[\e[38;5;${ACCENT_COLOR}m\]╭──[\[\e[0m\]\u\[\e[38;5;${ACCENT_COLOR}m\]@\[\e[0m\]\h\[\e[38;5;${ACCENT_COLOR}m\]] \[\e[0;2m\]\w\n\[\e[0;38;5;${ACCENT_COLOR}m\]╰╴\[\e[0;2m\]$?\[\e[0;38;5;${ACCENT_COLOR}m\]╶╴\[\e[0m\]\$ "
+  local ec=$?
+  local ACCENT_COLOR=219
+  [[ -n $IN_NIX_SHELL ]] && ACCENT_COLOR=160
+
+  PS1="\[\e[38;5;${ACCENT_COLOR}m\]╭──[\[\e[0m\]\u\[\e[38;5;${ACCENT_COLOR}m\]@\[\e[0m\]\h\[\e[38;5;${ACCENT_COLOR}m\]] \[\e[0;2m\]\w\n\[\e[0;38;5;${ACCENT_COLOR}m\]╰╴\[\e[0;2m\]${ec}\[\e[0;38;5;${ACCENT_COLOR}m\]╶╴\[\e[0m\]\$ "
 }
 
 PROMPT_COMMAND="_update_prompt"
@@ -33,4 +35,4 @@ alias reboot='/usr/bin/env systemctl reboot --no-wall'
 testpkg() { nix-shell -p "$1" --command bash; }
 copy() { cat "$1" | wl-copy; }
 cpdir() { pwd | wl-copy; }
-cleannix() { nix-collect-garbage -d; }
+cleannix() { sudo nix-collect-garbage -d; }

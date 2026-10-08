@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   sources = import ./lon.nix;
@@ -28,7 +28,7 @@ in
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
-    }
+    };
     
     plymouth = {
       enable = true;
@@ -37,10 +37,11 @@ in
         DeviceScale=2
       '';
 #      theme = "bgrt";
-      theme = "connect";
+#      theme = "connect";
+      theme = "dna";
       themePackages = with pkgs; [
         (adi1090x-plymouth-themes.override {
-          selected_themes = [ "connect" ];
+          selected_themes = [ "dna" ];
         })
       ];
 

@@ -25,6 +25,7 @@
     "modesetting"
   ];
 
+  boot.kernelParams = [ "nvidia.NVreg_TemporaryFilePath=/var/tmp" ];
   hardware.nvidia = {
     # Modesetting is required.
     modesetting.enable = true;

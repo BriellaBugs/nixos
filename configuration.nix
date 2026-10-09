@@ -37,11 +37,11 @@ in
         DeviceScale=2
       '';
 #      theme = "bgrt";
-#      theme = "connect";
-      theme = "dna";
+      theme = "connect";
+#      theme = "dna";
       themePackages = with pkgs; [
         (adi1090x-plymouth-themes.override {
-          selected_themes = [ "dna" ];
+          selected_themes = [ "connect" ];
         })
       ];
 
@@ -69,6 +69,21 @@ in
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Add a vcan
+  systemd.network = {
+    enable = true;
+    netdevs."10-vcan0" = {
+      netdevConfig = {
+        Kind = "vcan";
+        Name = "vcan0";
+      };
+    };
+    networks."10-vcan0" = {
+      matchConfig.Name = "vcan0";
+      networkConfig.ConfigureWithoutCarrier = true;
+    };
+  };
+
   # Set your time zone.
   time.timeZone = "America/Asuncion";
 
@@ -92,11 +107,15 @@ in
 
   services.displayManager.sddm = {
     enable = true;
+#    package = pkgs.kdePackages.sddm;
     wayland.enable = true;
     wayland.compositor = "kwin";
 
     theme = "sddm-astronaut-theme";
-    extraPackages = [ pkgs.sddm-astronaut ];
+    extraPackages = with pkgs; [
+      kdePackages.qtmultimedia # Required for video backgrounds/audio
+      sddm-astronaut
+    ];
   };
 
   # Enable the KDE Plasma Desktop Environment.
@@ -150,4 +169,28 @@ in
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "26.05"; # Did you read the comment?
+
+  specialisation.aidev.configuration = {
+    # Do not automatically mount the Windows partition.
+    fileSystems."/mnt/windows".options = lib.mkForce [
+      "noauto"
+      "nofail"
+      "noatime"
+      "ro"
+      "uid=1000"
+      "gid=100"
+      "umask=077"
+    ];
+
+    # Keep the agent account unprivileged.
+    # Define dev account.
+    users.users."aidev" = {
+      isNormalUser = true;
+      uid = 1001;
+      description = "Developer";
+      extraGroups = [ "networkmanager" ];
+      packages = with pkgs; [ android-tools claude-code claude-monitor gnumake gcc ];
+      initialPassword = "developer";
+    };
+  };
 }

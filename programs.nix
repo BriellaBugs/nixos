@@ -8,7 +8,6 @@
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     lon
-    nano
     wget
     lshw
     kitty
@@ -20,9 +19,34 @@
     sddm-astronaut
   ];
 
+#  pkgs.sddm-astronaut.override = { embeddedTheme = "japanese_aesthetic"; };
+
   environment.etc."xdg/kitty/kitty.conf".source = ./kitty.conf;
 
   programs.kdeconnect.enable = true;
+
+  programs.nano = {
+    enable = true;
+    nanorc = ''
+      set nowrap
+      set tabstospaces
+      set tabsize 2
+      set historylog
+      set magic
+      set nohelp
+      set positionlog
+      set smarthome
+      set zap
+      set autoindent
+      set linenumbers
+      set stateflags
+      set errorcolor bold,white,red
+      set numbercolor crimson,normal
+      set selectedcolor white,purple
+      set spotlightcolor black,lightyellow
+      set titlecolor bold,white,crimson
+    ''; 
+  };
 
   # Key Remapping
   services.keyd = {

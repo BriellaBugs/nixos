@@ -17,6 +17,8 @@
     inkscape
     wl-clipboard
     sddm-astronaut
+    vesktop
+    yt-dlp
   ];
 
 #  pkgs.sddm-astronaut.override = { embeddedTheme = "japanese_aesthetic"; };
@@ -86,6 +88,7 @@
   };
   systemd.tmpfiles.rules = [
     "L+ /home/briella/.bashrc - - - - ${./bashrc}"
+    "L+ /home/briella/.local/bin/nwatch.sh - - - - ${./nwatch.sh}"
   ];
 
   # VR

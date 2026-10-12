@@ -17,7 +17,9 @@ _update_prompt() {
 
 PROMPT_COMMAND="_update_prompt"
 
-PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
+#export PATH="$PATH:/etc/nixos/bin"
+#export PATH="$PATH:/etc/nixos/scripts"
 
 # defaults
 

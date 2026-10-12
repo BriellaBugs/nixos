@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Allow unfree packages
@@ -86,10 +86,20 @@
     enable = true;
     completion.enable = true;
   };
-  systemd.tmpfiles.rules = [
-    "L+ /home/briella/.bashrc - - - - ${./bashrc}"
-    "L+ /home/briella/.local/bin/nwatch.sh - - - - ${./nwatch.sh}"
-  ];
+
+#  systemd.tmpfiles.rules = [
+#    "L+ /home/briella/.bashrc - - - - ${./bashrc}"
+#    "L+ /home/briella/.local/bin/nwatch.sh - - - - ${./nwatch.sh}"
+#  ];
+
+  systemd.tmpfiles.rules =
+    [
+      "L+ /home/briella/.bashrc - - - - ${./bashrc}"
+      "d /home/briella/.local/bin 0755 briella users - -"
+    ]
+    ++ (lib.mapAttrsToList
+      (name: _: "L+ /home/briella/.local/bin/${name} - - - - ${./bin + "/${name}"}")
+      (builtins.readDir ./bin));
 
   # VR
   services.wivrn = {

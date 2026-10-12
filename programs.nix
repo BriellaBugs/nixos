@@ -87,11 +87,6 @@
     completion.enable = true;
   };
 
-#  systemd.tmpfiles.rules = [
-#    "L+ /home/briella/.bashrc - - - - ${./bashrc}"
-#    "L+ /home/briella/.local/bin/nwatch.sh - - - - ${./nwatch.sh}"
-#  ];
-
   systemd.tmpfiles.rules =
     [
       "L+ /home/briella/.bashrc - - - - ${./bashrc}"

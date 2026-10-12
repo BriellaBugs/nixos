@@ -94,7 +94,10 @@
     ]
     ++ (lib.mapAttrsToList
       (name: _: "L+ /home/briella/.local/bin/${name} - - - - ${./bin + "/${name}"}")
-      (builtins.readDir ./bin));
+      (builtins.readDir ./bin))
+    ++ (lib.mapAttrsToList
+      (name: _: "L+ /home/briella/.local/bin/${name} - - - - ${./scripts + "/${name}"}")
+      (builtins.readDir ./scripts));
 
   # VR
   services.wivrn = {

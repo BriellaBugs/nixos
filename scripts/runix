@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+app="$1"
+shift
+
+exec nix-shell "$HOME/Apps/$app.nix" -- "$@"

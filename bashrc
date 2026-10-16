@@ -22,6 +22,7 @@ export PATH="$PATH:$HOME/.local/bin"
 # defaults
 
 alias ls='ls -a --color=auto'
+alias tree='tree -a -C'
 alias grep='grep --color=auto'
 
 # shorthands
@@ -36,3 +37,4 @@ testpkg() { nix-shell -p "$1" --command bash; }
 copy() { cat "$1" | wl-copy; }
 cpdir() { pwd | wl-copy; }
 cleannix() { sudo nix-collect-garbage -d; }
+alias view='nano -v'
